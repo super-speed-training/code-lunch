@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using query_basic.Models;
@@ -11,10 +12,19 @@ namespace query_basic
         static async Task Main(string[] args)
         {
             LinQ();
-            await ShowRegistrations_Bad(new QuickDac());
-            await ShowRegistrations_Bad(new SlowDac());
-            await ShowRegistrations_Good(new QuickDac());
-            await ShowRegistrations_Good(new SlowDac());
+
+            // await ShowRegistrations_Bad(new QuickDac());
+            // await ShowRegistrations_Bad(new SlowDac());
+
+            // await ShowRegistrations_Good(new QuickDac());
+            // await ShowRegistrations_Good(new SlowDac());
+
+            // await ShowRegistrationsWithCondition_Bad(new QuickDac());
+            // await ShowRegistrationsWithCondition_Good(new QuickDac());
+
+            // Make it Work
+            // Make it Right
+            // Make it Fast
         }
 
         static void LinQ()
@@ -22,21 +32,23 @@ namespace query_basic
             var students = Enumerable.Range(1, 5)
                 .Select(it => new Student
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = $"Student{it:00}"
+                    Id = $"{Guid.NewGuid()}",
+                    Name = $"Student{it:00}",
                 });
 
             Console.WriteLine("[ROUND-1]");
             foreach (var item in students)
             {
-                System.Console.WriteLine($"{item.Id}, {item.Name}");
+                Console.WriteLine($"{item.Id}, {item.Name}");
             }
 
             Console.WriteLine("[ROUND-2]");
             foreach (var item in students)
             {
-                System.Console.WriteLine($"{item.Id}, {item.Name}");
+                Console.WriteLine($"{item.Id}, {item.Name}");
             }
+
+            Console.WriteLine($"Are they equal? {students == students}");
         }
 
         static async Task ShowRegistrations_Bad(IDac dac)
@@ -47,7 +59,7 @@ namespace query_basic
                 var student = await dac.GetStudent(it => it.Id == reg.StudentId);
                 var subject = await dac.GetSubject(it => it.Id == reg.SubjectId);
                 var teacher = await dac.GetTeacher(it => it.Id == subject.TeacherId);
-                Console.WriteLine($"{subject.Name}, {student.Name}, {teacher.Name}");
+                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}");
             }
         }
 
@@ -69,8 +81,29 @@ namespace query_basic
                 var student = students.FirstOrDefault(it => it.Id == reg.StudentId);
                 var subject = subjects.FirstOrDefault(it => it.Id == reg.SubjectId);
                 var teacher = teachers.FirstOrDefault(it => it.Id == subject.TeacherId);
-                Console.WriteLine($"{subject.Name}, {student.Name}, {teacher.Name}");
+                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}");
             }
+        }
+
+        static async Task ShowRegistrationsWithCondition_Bad(IDac dac)
+        {
+            var regs = await dac.GetRegistrations(it => true);
+            var evenRegs = new List<Registration>();
+            foreach (var item in regs)
+            {
+                if (item.Id % 2 == 0)
+                {
+                    evenRegs.Add(item);
+                }
+            }
+            Console.WriteLine($"Any event Id in the registrations? {evenRegs.Count() > 0}");
+        }
+
+        static async Task ShowRegistrationsWithCondition_Good(IDac dac)
+        {
+            var regs = await dac.GetRegistrations(it => true);
+            var evenRegs = regs.Where(it => it.Id % 2 == 0);
+            Console.WriteLine($"Any event Id in the registrations? {evenRegs.Any()}");
         }
     }
 }
