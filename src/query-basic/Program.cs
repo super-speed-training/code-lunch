@@ -22,6 +22,12 @@ namespace query_basic
             // await ShowRegistrationsWithCondition_Bad(new QuickDac());
             // await ShowRegistrationsWithCondition_Good(new QuickDac());
 
+            // await FilterRegistrations_Bad(new QuickDac());
+            // await FilterRegistrations_Bad(new SlowDac());
+
+            // await FilterRegistrations_Good(new QuickDac());
+            // await FilterRegistrations_Good(new SlowDac());
+
             // Make it Work
             // Make it Right
             // Make it Fast
@@ -59,7 +65,7 @@ namespace query_basic
                 var student = await dac.GetStudent(it => it.Id == reg.StudentId);
                 var subject = await dac.GetSubject(it => it.Id == reg.SubjectId);
                 var teacher = await dac.GetTeacher(it => it.Id == subject.TeacherId);
-                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}");
+                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}, {reg.Semester}, {reg.Grade}");
             }
         }
 
@@ -81,7 +87,7 @@ namespace query_basic
                 var student = students.FirstOrDefault(it => it.Id == reg.StudentId);
                 var subject = subjects.FirstOrDefault(it => it.Id == reg.SubjectId);
                 var teacher = teachers.FirstOrDefault(it => it.Id == subject.TeacherId);
-                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}");
+                Console.WriteLine($"{reg.Id:00}|{subject.Name}, {student.Name}, {teacher.Name}, {reg.Semester}, {reg.Grade}");
             }
         }
 
@@ -104,6 +110,50 @@ namespace query_basic
             var regs = await dac.GetRegistrations(it => true);
             var evenRegs = regs.Where(it => it.Id % 2 == 0);
             Console.WriteLine($"Any event Id in the registrations? {evenRegs.Any()}");
+        }
+
+        static async Task FilterRegistrations_Bad(IDac dac)
+        {
+            var firstSemesters = await dac.GetRegistrations(it => it.Semester == "1st" && it.Grade == 0);
+            var secondSemester = await dac.GetRegistrations(it => it.Semester == "2nd" && it.Grade == 0);
+
+            Console.WriteLine("Fail students in the 1st semester");
+            foreach (var item in firstSemesters)
+            {
+                var student = await dac.GetStudent(it => it.Id == item.StudentId);
+                Console.WriteLine(student.Name);
+            }
+
+            Console.WriteLine("Fail students in the 2nd semester");
+            foreach (var item in secondSemester)
+            {
+                var student = await dac.GetStudent(it => it.Id == item.StudentId);
+                Console.WriteLine(student.Name);
+            }
+        }
+
+        static async Task FilterRegistrations_Good(IDac dac)
+        {
+            var fails = await dac.GetRegistrations(it => it.Grade == 0);
+            var firstSemesters = fails.Where(it => it.Semester == "1st");
+            var secondSemester = fails.Where(it => it.Semester == "2nd");
+
+            var studentIdQry = fails.Select(it => it.StudentId).Distinct();
+            var students = await dac.GetStudents(it => studentIdQry.Contains(it.Id));
+
+            Console.WriteLine("Fail students in the 1st semester");
+            foreach (var item in firstSemesters)
+            {
+                var student = students.FirstOrDefault(it => it.Id == item.StudentId);
+                Console.WriteLine(student.Name);
+            }
+
+            Console.WriteLine("Fail students in the 2nd semester");
+            foreach (var item in secondSemester)
+            {
+                var student = students.FirstOrDefault(it => it.Id == item.StudentId);
+                Console.WriteLine(student.Name);
+            }
         }
     }
 }

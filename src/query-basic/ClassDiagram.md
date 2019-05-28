@@ -20,6 +20,8 @@ class Registration {
   Id: int
   StudentId: string
   SubjectId: string
+  Semester: string
+  Grade: int
 }
 
 Teacher .. Subject 
