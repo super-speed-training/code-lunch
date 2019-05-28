@@ -2,11 +2,11 @@
 {
     public class Registration
     {
-        public string Id { get; }
+        public int Id { get; }
         public string StudentId { get; }
         public string SubjectId { get; }
 
-        public Registration(string id, string studentId, string subjectId)
+        public Registration(int id, string studentId, string subjectId)
         {
             Id = id;
             StudentId = studentId;
