@@ -20,7 +20,7 @@ namespace query_basic.Services
             Students = Enumerable.Range(1, totalStudent).Select(it => new Student($"sd{it}", $"Student{it}")).ToList();
             Subjects = Enumerable.Range(1, totalSubject).Select(it => new Subject($"sj{it}", $"Subject{it}", $"tc{random.Next(totalTeacher) + 1}")).ToList();
             var runningId = 0;
-            Registrations = Students.Select(it => new Registration(++runningId, it.Id, $"sj{random.Next(totalSubject) + 1}")).ToList();
+            Registrations = Students.Select(it => new Registration(++runningId, it.Id, $"sj{random.Next(totalSubject) + 1}", random.NextDouble() > 0.5 ? "1st" : "2nd", random.Next(5))).ToList();
         }
 
         public async Task<Student> GetStudent(Func<Student, bool> fn)
