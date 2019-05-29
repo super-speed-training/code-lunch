@@ -85,3 +85,64 @@ db.inventory.find( { qty: { $exists: true, $gte: 25 } } )
     { _id: 3, name: C, qty: 25 },
 ]
 ```
+
+# Mongo Shell Methods
+
+|Method|C#|
+|--|--|
+|.find()|Where|
+|.count()|Count|
+|.limit()|Take|
+|.sort(sort)|(1:OrderByAscending) (-1:OrderByDescending)|
+
+### Example
+|_id|name|qty|
+|--|--|--|
+|1|A|15|
+|2|B|20|
+|3|C|25|
+|4|D|20|
+
+```
+db.inventory.find({}).count()
+4
+```
+```
+db.inventory.find({}).limit(2)
+[
+    { _id: 1, name: "A", qty: 15 },
+    { _id: 2, name: "B", qty: 20 }
+]
+```
+```
+db.inventory.find({}).sort({qty: -1})
+[
+    { _id: 3, name: "C", qty: 25 },
+    { _id: 2, name: "B", qty: 20 },
+    { _id: 4, name: "D", qty: 20 },
+    { _id: 1, name: "A", qty: 15 },
+]
+```
+
+# Regular Expressions (RegEx)
+
+[https://regexr.com](https://regexr.com)
+
+|_id|name|
+|--|--|
+|1|alley|
+|2|bld1v155746295612912500012|
+|3|bld1v155746367813912500012|
+|4|bldlst1v21205062006007|
+|5|unt1v155746296699312500012|
+|6|unt1v155746368906012500012|
+|7|unt4b1vbld1v155746295612912500012|
+
+```
+db.inventory.find({ name: /unt1/ })
+
+[
+    { _id: 5, name: "unt1v155746296699312500012" },
+    { _id: 6, name: "unt1v155746368906012500012" },
+]
+```
