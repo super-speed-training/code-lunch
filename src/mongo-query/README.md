@@ -65,14 +65,23 @@ db.inventory.find( { $or: [ { name: "A" }, { qty: { $gte: 25 } } ] } )
 |_id|name|qty|
 |--|--|--|
 |1|A|15|
-|2|B|null|
-|3|C||
+|2|B|20|
+|3|C|25|
 |4|D|20|
+|5|E|null|
+|6|F||
 
 ```
-db.inventory.find( { qty: { $exists: true, $gte: 20 } } )
+db.inventory.find( { qty: { $exists: false } } )
 
 [
-    { _id: 4, name: D, qty: 20 },
+    { _id: 6, name: F },
+]
+```
+```
+db.inventory.find( { qty: { $exists: true, $gte: 25 } } )
+
+[
+    { _id: 3, name: C, qty: 25 },
 ]
 ```
