@@ -1,5 +1,7 @@
 # MongoDB CRUD
 
+[Official document](https://docs.mongodb.com/manual/core/crud)
+
 ```
 Working code ≠ Production code
 ```
@@ -28,10 +30,10 @@ Working code ≠ Production code
 * ~~collection.**FindOneAndUpdateAsync()**~~ ❌
 
 ![img](assets/single-user.JPG)
-* collection.Find(it => true).**Count()**
-* collection.Find(it => true).**CountAsync()**
-* collection.Find(it => true).**Any()**
-* collection.Find(it => true).**AnyAsync()**
+* collection.Find().**Count()**
+* collection.Find().**CountAsync()**
+* collection.Find().**Any()**
+* collection.Find().**AnyAsync()**
 
 ![img](assets/single-user.JPG) + Data
 * ~~collection.Find().**First()**~~ ❌
