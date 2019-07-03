@@ -8,7 +8,7 @@
 ## เมื่อทำงานเสร็จแล้วต้องการ merge
 1. checkout ไปที่ branch หลัก
 1. pull ตัวล่าสุดลงมา
-1. merge กับ local-branch ที่สร้างไว้
+1. merge กับ local-branch ที่สร้างไว้โดยใช้คำสั่ง no-ff (No Fast Forword)
 1. (ถ้ามี conflict ให้ทำการแก้ให้เรียบร้อย)
 1. ทำการ build project ทุกตัว เพื่อดูว่ายังใช้งานได้อยู่
 1. (ถ้ามีตัว api) ให้ลอง run swagger ดูว่า api ยังสามารถใช้งานได้
