@@ -1,5 +1,6 @@
 # Code Lunch ชั่วโมงโค๊ดหรรษา
 
+* [ประเภทของ model](/src/modeling)
 * [การทำงานกับ git ขั้นพื้นฐาน](/src/git)
 * [หลักปฎิบัติในการทำงานกับ MongoDb](/src/mongo-crud)
 * [ำสั่งการดึงข้อมูลจาก mongodb ขั้นพื้นฐาน](/src/mongo-query)
